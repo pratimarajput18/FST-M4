@@ -1,0 +1,15 @@
+Create table episode_3(charAndDialouges STRING);
+LOAD DATA LOCAL INPATH '/root/episodeVI_dialouges.txt' INTO TABLE episode_3;
+
+CREATE TABLE dlg_counts2 AS
+SELECT split(charAndDialouges,'\t')[0] AS chars, count(split(charAndDialouges,'\t')[1]) AS dlg_count FROM episode_3
+GROUP BY split(charAndDialouges,'\t')[0]
+ORDER BY dlg_count DESC;
+
+INSERT OVERWRITE DIRECTORY '/user/root/hiveOutput/export'
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t'
+SELECT * FROM movieDialogues.dlg_counts2;
+
+INSERT OVERWRITE LOCAL DIRECTORY '/root/export' 
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t'
+SELECT * FROM movieDialogues.dlg_counts2;

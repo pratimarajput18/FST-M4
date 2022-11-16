@@ -1,0 +1,17 @@
+Create table Luke_count(character STRING, dialouge STRING)
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t';
+
+LOAD DATA LOCAL INPATH '/root/episodeIV_dialouges.txt' INTO TABLE Luke_count;
+
+Create table countOfLuke AS
+select count(dialouge) AS lines FROM Luke_count where dialouge like '%Luke%';
+
+select * from countofluke;
+
+INSERT OVERWRITE DIRECTORY '/user/root/hiveOutput/export'
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t'
+select * from countofluke;
+
+INSERT OVERWRITE LOCAL DIRECTORY '/root/export' 
+ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t'
+select * from countofluke;
